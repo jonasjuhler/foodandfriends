@@ -4,6 +4,7 @@ import About from "./pages/About";
 import BookingPage from "./pages/BookingPage";
 import Login from "./pages/Login";
 import Profile from "./pages/Profile";
+import Admin from "./pages/Admin";
 import { AuthProvider } from "./contexts/AuthContext";
 
 function App() {
@@ -16,6 +17,7 @@ function App() {
             <Route path="/about" element={<About />} />
             <Route path="/login" element={<Login />} />
             <Route path="/profile" element={<Profile />} />
+            <Route path="/admin" element={<Admin />} />
           </Routes>
         </Layout>
       </Router>

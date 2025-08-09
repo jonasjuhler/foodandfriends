@@ -1,5 +1,6 @@
 from contextlib import asynccontextmanager
 
+from app.api.admin import router as admin_router
 from app.api.auth import router as auth_router
 from app.api.bookings import router as bookings_router
 from app.api.festival import router as festival_router
@@ -40,6 +41,7 @@ app.add_middleware(
 app.include_router(festival_router)
 app.include_router(auth_router)
 app.include_router(bookings_router)
+app.include_router(admin_router)
 app.include_router(users_router)
 
 

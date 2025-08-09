@@ -9,6 +9,7 @@ class User(BaseModel):
     email: str
     name: str
     email_opt_in: bool = True
+    is_admin: bool = False
     created_at: datetime = Field(default_factory=datetime.utcnow)
     updated_at: datetime = Field(default_factory=datetime.utcnow)
 
