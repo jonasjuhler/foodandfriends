@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useReducer, useEffect } from 'react';
+import React, { createContext, useContext, useReducer, useEffect, useRef } from 'react';
 import { User, AuthState, authApi } from '../lib/auth';
 
 interface AuthContextType {
@@ -49,6 +49,7 @@ const initialState: AuthState = {
 
 export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [state, dispatch] = useReducer(authReducer, initialState);
+  const hasCheckedRef = useRef(false);
 
   const login = async (idToken: string) => {
     try {
@@ -88,6 +89,8 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   };
 
   useEffect(() => {
+    if (hasCheckedRef.current) return;
+    hasCheckedRef.current = true;
     checkAuth();
   }, []);
 

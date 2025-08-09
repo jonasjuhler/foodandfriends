@@ -1,6 +1,7 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { useAuth } from "../contexts/AuthContext";
 import { bookingsApi, Booking } from "../lib/bookings";
+import { config } from "../lib/config";
 
 interface Day {
   id: string;
@@ -20,23 +21,34 @@ const BookingPage: React.FC = () => {
   const [myBooking, setMyBooking] = useState<Booking | null>(null);
   const [bookingLoading, setBookingLoading] = useState(false);
 
+  // Avoid double fetch in React 18 StrictMode
+  const fetchedDaysOnce = useRef(false);
+
+  // Fetch days once on mount
   useEffect(() => {
+    if (fetchedDaysOnce.current) return;
+    fetchedDaysOnce.current = true;
+
     const fetchDays = async () => {
       try {
         const response = await fetch(
-          "http://localhost:8000/api/v1/festival/days"
+          `${config.API_BASE_URL}/api/v1/festival/days`
         );
         const data = await response.json();
         setDays(data);
       } catch (error) {
         console.error("Error fetching festival days:", error);
-        // Fallback data for development
         setDays([]);
       } finally {
         setLoading(false);
       }
     };
 
+    fetchDays();
+  }, []);
+
+  // Fetch my booking when auth state changes
+  useEffect(() => {
     const fetchMyBooking = async () => {
       if (state.isAuthenticated) {
         try {
@@ -45,10 +57,11 @@ const BookingPage: React.FC = () => {
         } catch (error) {
           console.error("Error fetching my booking:", error);
         }
+      } else {
+        setMyBooking(null);
       }
     };
 
-    fetchDays();
     fetchMyBooking();
   }, [state.isAuthenticated]);
 
@@ -102,7 +115,7 @@ const BookingPage: React.FC = () => {
 
       // Refresh days to update availability
       const response = await fetch(
-        "http://localhost:8000/api/v1/festival/days"
+        `${config.API_BASE_URL}/api/v1/festival/days`
       );
       const data = await response.json();
       setDays(data);
@@ -123,9 +136,9 @@ const BookingPage: React.FC = () => {
       setMyBooking(null);
 
       // Refresh days to update availability
-      const response = await fetch(
-        "http://localhost:8000/api/v1/festival/days"
-      );
+    const response = await fetch(
+      `${config.API_BASE_URL}/api/v1/festival/days`
+    );
       const data = await response.json();
       setDays(data);
     } catch (error) {
