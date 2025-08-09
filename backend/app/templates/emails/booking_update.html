@@ -1,0 +1,25 @@
+{% extends "emails/base_template.html" %}
+
+{% block title %}Booking Updated - Food & Friends Festival{% endblock %}
+
+{% block header %}Booking Updated! ✏️{% endblock %}
+
+{% block content %}
+<h2>Hello {{ user_name }}!</h2>
+
+<p>Your booking has been updated successfully.</p>
+
+<div class="booking-details">
+    <h3>Updated Booking Details:</h3>
+    <ul>
+        <li><strong>Date:</strong> {{ booking_date }}</li>
+        <li><strong>Theme:</strong> {{ day_theme }}</li>
+        <li><strong>Price:</strong> {{ price }} DKK</li>
+        <li><strong>Location:</strong> {{ location }}</li>
+    </ul>
+</div>
+
+<p>Your booking is now confirmed for the new date.</p>
+
+<p>If you need to make any further changes, you can do so from your profile page.</p>
+{% endblock %} 

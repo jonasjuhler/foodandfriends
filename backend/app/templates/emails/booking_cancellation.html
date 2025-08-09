@@ -1,0 +1,25 @@
+{% extends "emails/base_template.html" %}
+
+{% block title %}Booking Cancelled - Food & Friends Festival{% endblock %}
+
+{% block header %}Booking Cancelled{% endblock %}
+
+{% block content %}
+<h2>Hello {{ user_name }}!</h2>
+
+<p>Your booking has been cancelled successfully.</p>
+
+<div class="booking-details">
+    <h3>Cancelled Booking Details:</h3>
+    <ul>
+        <li><strong>Date:</strong> {{ booking_date }}</li>
+        <li><strong>Theme:</strong> {{ day_theme }}</li>
+        <li><strong>Price:</strong> {{ price }} DKK</li>
+        <li><strong>Location:</strong> {{ location }}</li>
+    </ul>
+</div>
+
+<p>We're sorry to see you go! If you change your mind, you can always book again from the festival page.</p>
+
+<p>Thank you for your interest in the Food & Friends Festival.</p>
+{% endblock %} 

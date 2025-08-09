@@ -21,7 +21,16 @@ class Settings(BaseSettings):
     # AWS SES
     AWS_ACCESS_KEY_ID: str = ""
     AWS_SECRET_ACCESS_KEY: str = ""
-    AWS_REGION: str = "us-east-1"
+    AWS_REGION: str = "eu-north-1"
+
+    # Email
+    EMAIL_FROM_ADDRESS: str = "noreply@foodandfriends.dk"
+    EMAIL_FROM_NAME: str = "Food & Friends"
+    EMAIL_REPLY_TO: str = ""
+    EMAIL_ENABLE_SENDING: bool = False
+
+    # Environment
+    ENVIRONMENT: str = "local"
 
     # CORS
     ALLOWED_ORIGINS: List[str] = ["http://localhost:5173", "http://localhost:3000"]
