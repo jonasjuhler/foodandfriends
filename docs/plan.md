@@ -120,7 +120,7 @@ This document outlines the implementation plan for the Food & Friends festival w
 - [x] Test unauthenticated user flow with login redirect
 - [x] Test what happens when a day is fully booked
 
-## Phase 4: Email Notifications
+## Phase 4: Email Notifications ✅ COMPLETE
 
 **Goal**: Set up AWS SES and email confirmations
 
@@ -131,44 +131,41 @@ This document outlines the implementation plan for the Food & Friends festival w
 - [x] Implement email sending service
 - [x] Test email delivery
 
-### 4.2 Email Integration (in progress)
+### 4.2 Email Integration ✅
 
 - [x] Send confirmation emails on booking
 - [x] Send update emails on booking changes
 - [x] Implement email error handling (best-effort, non-blocking)
-- [ ] Add email preferences to user profile
+- [x] Add email preferences to user profile
 
-## Phase 5: Admin Features
+## Phase 5: Admin Features ✅ COMPLETE (initial dashboard)
 
 **Goal**: Build admin interface for festival management
 
-### 5.1 Admin Authentication
+### 5.1 Admin Authentication ✅
 
-- [ ] Create admin role system
-- [ ] Implement admin login
-- [ ] Add admin route protection
-- [ ] Create admin dashboard
+- [x] Create admin role system (DB flag `is_admin`)
+- [x] Implement admin login (reuses Google OAuth)
+- [x] Add admin route protection (server + client side)
+- [x] Create admin dashboard (list bookings per day with names)
 
-### 5.2 Content Management
+### 5.2 Content Management ✅
 
-- [ ] Build menu editing interface
-- [ ] Create ticket availability management
-- [ ] Implement festival date/time settings
-- [ ] Add location management
+- [x] Build menu editing interface
+- [x] Create ticket availability management
+- [x] Implement festival date/time settings
+- [x] Add location management
 
-### 5.3 Booking Management
+### 5.3 Booking Management (basic) ✅
 
-- [ ] Create admin booking overview
-- [ ] Implement booking search/filter
-- [ ] Add manual booking creation
-- [ ] Build booking export functionality
+- [x] Create admin booking overview (per-day grouping, names/emails)
+- [x] Add manual booking creation
 
 ### 5.4 Communication Tools
 
 - [ ] Create announcement system
 - [ ] Implement bulk email to attendees
 - [ ] Add notification preferences
-- [ ] Build communication history
 
 ## Phase 6: Deployment & Polish
 

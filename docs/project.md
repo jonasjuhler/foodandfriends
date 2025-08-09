@@ -58,6 +58,35 @@ Create a web app for our food festival. It should allow our friends to see a use
 - View all bookings
 - Send announcements to attendees
 
+### Admin Content Management Decisions (Phase 5.2)
+
+- Scope & data model
+  - Single festival instance for now
+  - Admins can add and remove days
+  - Day "menu" is a simple rich text string
+- Festival settings
+  - Changing festival start/end dates should constrain day dates in the UI
+  - Timezone: Europe/Copenhagen
+  - Price changes apply only to future bookings
+- Day editing
+  - Admins may change a day’s date even if bookings exist; no emails sent
+  - Capacity reductions are allowed even if below current bookings
+  - Capacity increases update availability immediately
+- Ticket availability management
+  - Manage capacity per day only
+  - Tickets sold are derived strictly from bookings
+- Validation and safeguards
+  - Use confirmation dialogs for risky actions (date changes, capacity reductions)
+  - No preview needed for menu edits; no special field requirements
+- Notifications
+  - No emails sent for admin-driven content changes
+- Permissions & access
+  - Admin-only actions (both server and client enforced)
+- UX expectations
+  - Use a modal for editing day details
+  - Manage festival settings within the same admin dashboard
+  - No undo/version history required
+
 ### User Profile
 
 - Name
