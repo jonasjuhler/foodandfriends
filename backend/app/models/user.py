@@ -8,6 +8,7 @@ class User(BaseModel):
     google_id: str
     email: str
     name: str
+    email_opt_in: bool = True
     created_at: datetime = Field(default_factory=datetime.utcnow)
     updated_at: datetime = Field(default_factory=datetime.utcnow)
 

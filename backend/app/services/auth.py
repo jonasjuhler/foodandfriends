@@ -68,6 +68,7 @@ class AuthService:
                 google_id=google_user_info["sub"],
                 email=google_user_info["email"],
                 name=google_user_info.get("name", "Unknown"),
+                email_opt_in=True,
                 created_at=datetime.utcnow(),
                 updated_at=datetime.utcnow(),
             )

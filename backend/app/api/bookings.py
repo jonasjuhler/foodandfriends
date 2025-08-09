@@ -70,27 +70,28 @@ async def create_booking(request: CreateBookingRequest, current_user: User = Dep
     print(f"Booking created with ID: {new_booking.booking_id}")
 
     # Send confirmation email (best-effort)
-    try:
-        # Fetch festival for details
-        festival = db[settings.DATABASE_NAME].festivals.find_one({"festival_id": day["festival_id"]}) or {}
+    if getattr(current_user, "email_opt_in", True):
+        try:
+            # Fetch festival for details
+            festival = db[settings.DATABASE_NAME].festivals.find_one({"festival_id": day["festival_id"]}) or {}
 
-        # Format date
-        day_date = day.get("date")
-        if isinstance(day_date, datetime):
-            booking_date_str = day_date.strftime("%B %d, %Y")
-        else:
-            booking_date_str = str(day_date)
+            # Format date
+            day_date = day.get("date")
+            if isinstance(day_date, datetime):
+                booking_date_str = day_date.strftime("%B %d, %Y")
+            else:
+                booking_date_str = str(day_date)
 
-        context = {
-            "user_name": current_user.name,
-            "day_theme": day.get("theme", ""),
-            "booking_date": booking_date_str,
-            "price": str(festival.get("price", "50")),
-            "location": festival.get("location", "Guldbergsgade 51A, 4. tv., 2200 København N"),
-        }
-        email_service.send_booking_confirmation(current_user.email, context)
-    except Exception as e:
-        print(f"Email send failed (create): {e}")
+            context = {
+                "user_name": current_user.name,
+                "day_theme": day.get("theme", ""),
+                "booking_date": booking_date_str,
+                "price": str(festival.get("price", "50")),
+                "location": festival.get("location", "Guldbergsgade 51A, 4. tv., 2200 København N"),
+            }
+            email_service.send_booking_confirmation(current_user.email, context)
+        except Exception as e:
+            print(f"Email send failed (create): {e}")
 
     return BookingResponse(**new_booking.model_dump())
 
@@ -159,24 +160,25 @@ async def update_my_booking(request: CreateBookingRequest, current_user: User = 
     )
 
     # Send update email (best-effort)
-    try:
-        festival = db[settings.DATABASE_NAME].festivals.find_one({"festival_id": day["festival_id"]}) or {}
-        day_date = day.get("date")
-        if isinstance(day_date, datetime):
-            booking_date_str = day_date.strftime("%B %d, %Y")
-        else:
-            booking_date_str = str(day_date)
+    if getattr(current_user, "email_opt_in", True):
+        try:
+            festival = db[settings.DATABASE_NAME].festivals.find_one({"festival_id": day["festival_id"]}) or {}
+            day_date = day.get("date")
+            if isinstance(day_date, datetime):
+                booking_date_str = day_date.strftime("%B %d, %Y")
+            else:
+                booking_date_str = str(day_date)
 
-        context = {
-            "user_name": current_user.name,
-            "day_theme": day.get("theme", ""),
-            "booking_date": booking_date_str,
-            "price": str(festival.get("price", "50")),
-            "location": festival.get("location", "Guldbergsgade 51A, 4. tv., 2200 København N"),
-        }
-        email_service.send_booking_update(current_user.email, context)
-    except Exception as e:
-        print(f"Email send failed (update): {e}")
+            context = {
+                "user_name": current_user.name,
+                "day_theme": day.get("theme", ""),
+                "booking_date": booking_date_str,
+                "price": str(festival.get("price", "50")),
+                "location": festival.get("location", "Guldbergsgade 51A, 4. tv., 2200 København N"),
+            }
+            email_service.send_booking_update(current_user.email, context)
+        except Exception as e:
+            print(f"Email send failed (update): {e}")
 
     return BookingResponse(**updated_booking.model_dump())
 
@@ -197,27 +199,30 @@ async def cancel_my_booking(current_user: User = Depends(get_current_user)):
         raise HTTPException(status_code=404, detail="No booking found to cancel")
 
     # Send cancellation email (best-effort)
-    try:
-        if current_booking:
-            day = db[settings.DATABASE_NAME].days.find_one({"day_id": current_booking.get("day_id")}) or {}
-            festival = (
-                db[settings.DATABASE_NAME].festivals.find_one({"festival_id": current_booking.get("festival_id")}) or {}
-            )
-            day_date = day.get("date")
-            if isinstance(day_date, datetime):
-                booking_date_str = day_date.strftime("%B %d, %Y")
-            else:
-                booking_date_str = str(day_date)
+    if getattr(current_user, "email_opt_in", True):
+        try:
+            if current_booking:
+                print(f"Sending cancellation email for booking: {current_booking}")
+                day = db[settings.DATABASE_NAME].days.find_one({"day_id": current_booking.get("day_id")}) or {}
+                festival = (
+                    db[settings.DATABASE_NAME].festivals.find_one({"festival_id": current_booking.get("festival_id")})
+                    or {}
+                )
+                day_date = day.get("date")
+                if isinstance(day_date, datetime):
+                    booking_date_str = day_date.strftime("%B %d, %Y")
+                else:
+                    booking_date_str = str(day_date)
 
-            context = {
-                "user_name": current_user.name,
-                "day_theme": day.get("theme", ""),
-                "booking_date": booking_date_str,
-                "price": str(festival.get("price", "50")),
-                "location": festival.get("location", "Guldbergsgade 51A, 4. tv., 2200 København N"),
-            }
-            email_service.send_booking_cancellation(current_user.email, context)
-    except Exception as e:
-        print(f"Email send failed (cancel): {e}")
+                context = {
+                    "user_name": current_user.name,
+                    "day_theme": day.get("theme", ""),
+                    "booking_date": booking_date_str,
+                    "price": str(festival.get("price", "50")),
+                    "location": festival.get("location", "Guldbergsgade 51A, 4. tv., 2200 København N"),
+                }
+                email_service.send_booking_cancellation(current_user.email, context)
+        except Exception as e:
+            print(f"Email send failed (cancel): {e}")
 
     return {"message": "Booking cancelled successfully"}

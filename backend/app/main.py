@@ -3,6 +3,7 @@ from contextlib import asynccontextmanager
 from app.api.auth import router as auth_router
 from app.api.bookings import router as bookings_router
 from app.api.festival import router as festival_router
+from app.api.users import router as users_router
 from app.core.config import settings
 from app.core.database import close_mongo_connection, connect_to_mongo
 from fastapi import FastAPI
@@ -39,6 +40,7 @@ app.add_middleware(
 app.include_router(festival_router)
 app.include_router(auth_router)
 app.include_router(bookings_router)
+app.include_router(users_router)
 
 
 @app.get("/")

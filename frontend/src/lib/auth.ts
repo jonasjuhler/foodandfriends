@@ -7,6 +7,7 @@ export interface User {
   name: string;
   created_at: string;
   updated_at: string;
+  email_opt_in?: boolean;
 }
 
 export interface AuthState {
@@ -60,3 +61,28 @@ export const authApi = {
     return response.json();
   },
 }; 
+
+export const usersApi = {
+  async getProfile(token: string) {
+    const res = await fetch(`${API_BASE_URL}/api/v1/users/profile`, {
+      headers: { Authorization: `Bearer ${token}` },
+    });
+    if (!res.ok) throw new Error('Failed to load profile');
+    return res.json();
+  },
+  async updateProfile(
+    token: string,
+    data: Partial<Pick<User, 'name' | 'email_opt_in'>>,
+  ) {
+    const res = await fetch(`${API_BASE_URL}/api/v1/users/profile`, {
+      method: 'PUT',
+      headers: {
+        Authorization: `Bearer ${token}`,
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(data),
+    });
+    if (!res.ok) throw new Error('Failed to update profile');
+    return res.json();
+  },
+};
